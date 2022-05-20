@@ -6,6 +6,8 @@ from PyQt5 import QtGui as qtg
 from PyQt5 import QtWebEngineWidgets as qtwe
 from PyQt5 import QtWidgets as qtw
 
+import js
+
 
 class MainWindow(qtw.QMainWindow):
     def __init__(self):
@@ -38,16 +40,23 @@ class MainWindow(qtw.QMainWindow):
 
         self.text_input = qtw.QLineEdit()
         buttons_layout.layout().addWidget(self.text_input)
-        test_btn = qtw.QPushButton("TEST", clicked=self.print_text)
-        buttons_layout.layout().addWidget(test_btn)
+        run_js_btn = qtw.QPushButton("Run Javascript", clicked=self._run_js)
+        buttons_layout.layout().addWidget(run_js_btn)
+        start_clicker_btn = qtw.QPushButton("START", clicked=self._start_clicker)
+        buttons_layout.layout().addWidget(start_clicker_btn)
+        stop_clicker_btn = qtw.QPushButton("STOP", clicked=self._stop_clicker)
+        buttons_layout.layout().addWidget(stop_clicker_btn)
 
         self.show()
 
-    def print_text(self):
-        print("test")
-        self.webview.page().runJavaScript("console.log(123);")
+    def _run_js(self):
         self.webview.page().runJavaScript(self.text_input.text())
 
+    def _start_clicker(self):
+        self.webview.page().runJavaScript(js.clicker)
+
+    def _stop_clicker(self):
+        self.webview.page().runJavaScript(js.stop_clicker)
 
 
 if __name__ == "__main__":

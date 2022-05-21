@@ -19,3 +19,5 @@ clicker = """
 """
 
 stop_clicker = "clearInterval(clicker);"
+
+buy_bulk = "Game.buyBulk = 10;"

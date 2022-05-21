@@ -38,6 +38,14 @@ class MainWindow(qtw.QMainWindow):
         webview_layout.addWidget(self.webview)
         self.webview.load(qtc.QUrl("https://orteil.dashnet.org/cookieclicker/"))
 
+        game_layout = qtw.QVBoxLayout()
+        buttons_layout.addLayout(game_layout)
+        cursor_widget = qtw.QPushButton("Cur")
+        buttons_layout.layout().addWidget(cursor_widget)
+        grandma_widget = qtw.QPushButton("Grandma")
+        buttons_layout.layout().addWidget(grandma_widget)
+
+
         self.text_input = qtw.QLineEdit()
         buttons_layout.layout().addWidget(self.text_input)
         run_js_btn = qtw.QPushButton("Run Javascript", clicked=self._run_js)

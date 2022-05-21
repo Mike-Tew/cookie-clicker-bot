@@ -1,5 +1,4 @@
 import sys
-from distutils import command
 
 from PyQt5 import QtCore as qtc
 from PyQt5 import QtGui as qtg
@@ -7,6 +6,7 @@ from PyQt5 import QtWebEngineWidgets as qtwe
 from PyQt5 import QtWidgets as qtw
 
 import js
+from BuildingWidget import Building
 
 
 class MainWindow(qtw.QMainWindow):
@@ -45,7 +45,6 @@ class MainWindow(qtw.QMainWindow):
         grandma_widget = qtw.QPushButton("Grandma")
         buttons_layout.layout().addWidget(grandma_widget)
 
-
         self.text_input = qtw.QLineEdit()
         buttons_layout.layout().addWidget(self.text_input)
         run_js_btn = qtw.QPushButton("Run Javascript", clicked=self._run_js)
@@ -54,6 +53,12 @@ class MainWindow(qtw.QMainWindow):
         buttons_layout.layout().addWidget(start_clicker_btn)
         stop_clicker_btn = qtw.QPushButton("STOP", clicked=self._stop_clicker)
         buttons_layout.layout().addWidget(stop_clicker_btn)
+
+        buttons_layout.layout().addWidget(Building())
+        buttons_layout.layout().addWidget(Building())
+        buttons_layout.layout().addWidget(Building())
+        buttons_layout.layout().addWidget(Building())
+        buttons_layout.layout().addWidget(Building())
 
         self.show()
 

@@ -38,13 +38,6 @@ class MainWindow(qtw.QMainWindow):
         webview_layout.addWidget(self.webview)
         self.webview.load(qtc.QUrl("https://orteil.dashnet.org/cookieclicker/"))
 
-        game_layout = qtw.QVBoxLayout()
-        buttons_layout.addLayout(game_layout)
-        cursor_widget = qtw.QPushButton("Cur")
-        buttons_layout.layout().addWidget(cursor_widget)
-        grandma_widget = qtw.QPushButton("Grandma")
-        buttons_layout.layout().addWidget(grandma_widget)
-
         self.text_input = qtw.QLineEdit()
         buttons_layout.layout().addWidget(self.text_input)
         run_js_btn = qtw.QPushButton("Run Javascript", clicked=self._run_js)
@@ -54,13 +47,21 @@ class MainWindow(qtw.QMainWindow):
         stop_clicker_btn = qtw.QPushButton("STOP", clicked=self._stop_clicker)
         buttons_layout.layout().addWidget(stop_clicker_btn)
 
-        buttons_layout.layout().addWidget(Building())
-        buttons_layout.layout().addWidget(Building())
-        buttons_layout.layout().addWidget(Building())
-        buttons_layout.layout().addWidget(Building())
-        buttons_layout.layout().addWidget(Building())
+
+        signal_ = qtc.pyqtSignal()
+        btn = qtw.QPushButton("signal")
+        btn.clicked.connect(self.test_signal)
+        buttons_layout.layout().addWidget(btn)
+        buttons_layout.layout().addWidget(Building("Cursor", self.test_signal))
+        # buttons_layout.layout().addWidget(Building("Grandma"))
+        # buttons_layout.layout().addWidget(Building("Farm"))
+        # buttons_layout.layout().addWidget(Building("Mine"))
+        # buttons_layout.layout().addWidget(Building("Factory"))
 
         self.show()
+
+    def test_signal(self):
+        print("Signalling", self.sender().text())
 
     def _run_js(self):
         self.webview.page().runJavaScript(self.text_input.text())

@@ -13,6 +13,12 @@ class MainWindow(qtw.QMainWindow):
     def __init__(self):
         super().__init__()
 
+        self.store = {
+            "Cursor": {"img": 1, "quantity": 1, "to_buy": 10},
+            "Grandma": {"img": 1, "quantity": 1, "to_buy": 10},
+            "Farm": {"img": 1, "quantity": 1, "to_buy": 10},
+        }
+
         self.setWindowTitle("Cookie Clicker Bot")
         self.setFixedSize(1900, 1080)
 
@@ -47,12 +53,7 @@ class MainWindow(qtw.QMainWindow):
         stop_clicker_btn = qtw.QPushButton("STOP", clicked=self._stop_clicker)
         buttons_layout.layout().addWidget(stop_clicker_btn)
 
-
-        signal_ = qtc.pyqtSignal()
-        btn = qtw.QPushButton("signal")
-        btn.clicked.connect(self.test_signal)
-        buttons_layout.layout().addWidget(btn)
-        buttons_layout.layout().addWidget(Building("Cursor", self.test_signal))
+        buttons_layout.layout().addWidget(Building("Cursor", self.update_store))
         # buttons_layout.layout().addWidget(Building("Grandma"))
         # buttons_layout.layout().addWidget(Building("Farm"))
         # buttons_layout.layout().addWidget(Building("Mine"))
@@ -60,8 +61,8 @@ class MainWindow(qtw.QMainWindow):
 
         self.show()
 
-    def test_signal(self):
-        print("Signalling", self.sender().text())
+    def update_store(self, name, action):
+        print(name, action)
 
     def _run_js(self):
         self.webview.page().runJavaScript(self.text_input.text())

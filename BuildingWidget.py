@@ -5,13 +5,14 @@ class Building(qtw.QWidget):
     def __init__(self, name, update_store):
         super().__init__()
         layout = qtw.QHBoxLayout()
+        self.name = name
 
         img_lbl = qtw.QLabel("IMG")
         layout.addWidget(img_lbl)
         name_lbl = qtw.QLabel(name)
         layout.addWidget(name_lbl)
-        amount_lbl = qtw.QLabel("100/150")
-        layout.addWidget(amount_lbl)
+        self.amount_lbl = qtw.QLabel("100/150")
+        layout.addWidget(self.amount_lbl)
 
         down_btn = qtw.QPushButton("-")
         down_btn.clicked.connect(lambda: update_store(name, False))
@@ -22,3 +23,9 @@ class Building(qtw.QWidget):
         layout.addWidget(up_btn)
 
         self.setLayout(layout)
+
+    def test_slot(self, store):
+        quantity = store[self.name]["quantity"]
+        to_buy = store[self.name]["to_buy"]
+        formatted_lbl = f"{quantity}/{to_buy}"
+        self.amount_lbl.setText(formatted_lbl)

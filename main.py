@@ -10,13 +10,15 @@ from BuildingWidget import Building
 
 
 class MainWindow(qtw.QMainWindow):
+    test_signal = qtc.pyqtSignal(object)
+
     def __init__(self):
         super().__init__()
 
         self.store = {
             "Cursor": {"img": 1, "quantity": 1, "to_buy": 10},
-            "Grandma": {"img": 1, "quantity": 1, "to_buy": 10},
-            "Farm": {"img": 1, "quantity": 1, "to_buy": 10},
+            "Grandma": {"img": 1, "quantity": 21, "to_buy": 110},
+            "Farm": {"img": 1, "quantity": 5, "to_buy": 50},
         }
 
         self.setWindowTitle("Cookie Clicker Bot")
@@ -53,16 +55,19 @@ class MainWindow(qtw.QMainWindow):
         stop_clicker_btn = qtw.QPushButton("STOP", clicked=self._stop_clicker)
         buttons_layout.layout().addWidget(stop_clicker_btn)
 
-        buttons_layout.layout().addWidget(Building("Cursor", self.update_store))
-        # buttons_layout.layout().addWidget(Building("Grandma"))
-        # buttons_layout.layout().addWidget(Building("Farm"))
-        # buttons_layout.layout().addWidget(Building("Mine"))
-        # buttons_layout.layout().addWidget(Building("Factory"))
+        self.building_widgets = {
+            building: Building(building, self.update_store) for building in self.store
+        }
+        for building in self.building_widgets.values():
+            buttons_layout.layout().addWidget(building)
+            self.test_signal.connect(building.test_slot)
 
         self.show()
 
     def update_store(self, name, action):
         print(name, action)
+        for building in self.building_widgets:
+            print(self.store[building])
 
     def _run_js(self):
         self.webview.page().runJavaScript(self.text_input.text())
@@ -72,6 +77,7 @@ class MainWindow(qtw.QMainWindow):
 
     def _stop_clicker(self):
         self.webview.page().runJavaScript(js.stop_clicker)
+        self.test_signal.emit(self.store)
 
 
 if __name__ == "__main__":

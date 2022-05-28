@@ -21,3 +21,11 @@ clicker = """
 stop_clicker = "clearInterval(clicker);"
 
 buy_bulk = "Game.buyBulk = 10;"
+
+store_items = """
+items = {}
+Object.keys(Game.Objects).forEach(key => {
+    items[key] = Game.Objects[key].amount
+});
+items;
+"""

@@ -11,15 +11,34 @@ from BuildingWidget import Building
 
 class MainWindow(qtw.QMainWindow):
     test_signal = qtc.pyqtSignal(object)
+    store = {
+        "Cursor": {"img": 1, "quantity": 0, "to_buy": 0},
+        "Grandma": {"img": 1, "quantity": 0, "to_buy": 0},
+        "Farm": {"img": 1, "quantity": 0, "to_buy": 0},
+        "Mine": {"img": 1, "quantity": 0, "to_buy": 0},
+        "Factory": {"img": 1, "quantity": 0, "to_buy": 0},
+        "Bank": {"img": 1, "quantity": 0, "to_buy": 0},
+        "Temple": {"img": 1, "quantity": 0, "to_buy": 0},
+        "Wizard tower": {"img": 1, "quantity": 0, "to_buy": 0},
+        "Shipment": {"img": 1, "quantity": 0, "to_buy": 0},
+        "Alchemy lab": {"img": 1, "quantity": 0, "to_buy": 0},
+        "Portal": {"img": 1, "quantity": 0, "to_buy": 0},
+        "Time machine": {"img": 1, "quantity": 0, "to_buy": 0},
+        "Antimatter condenser": {"img": 1, "quantity": 0, "to_buy": 0},
+        "Prism": {"img": 1, "quantity": 0, "to_buy": 0},
+        "Chancemaker": {"img": 1, "quantity": 0, "to_buy": 0},
+        "Fractal engine": {"img": 1, "quantity": 0, "to_buy": 0},
+        "Javascript console": {"img": 1, "quantity": 0, "to_buy": 0},
+        "Idleverse": {"img": 1, "quantity": 0, "to_buy": 0},
+    }
+    purchase_list = []
 
     def __init__(self):
         super().__init__()
 
-        self.store = {
-            "Cursor": {"img": 1, "quantity": 1, "to_buy": 10},
-            "Grandma": {"img": 1, "quantity": 21, "to_buy": 110},
-            "Farm": {"img": 1, "quantity": 5, "to_buy": 50},
-        }
+        self.timer = qtc.QTimer()
+        self.timer.timeout.connect(self.refresh)
+        self.timer.start(3000)
 
         self.setWindowTitle("Cookie Clicker Bot")
         self.setFixedSize(1900, 1080)
@@ -64,10 +83,28 @@ class MainWindow(qtw.QMainWindow):
 
         self.show()
 
-    def update_store(self, name, action):
-        print(name, action)
-        for building in self.building_widgets:
-            print(self.store[building])
+    def update_gui(self, var):
+        # try:
+        for item in var:
+            self.store[item]["quantity"] = var[item]
+            if self.store[item]["quantity"] > self.store[item]["to_buy"]:
+                self.store[item]["to_buy"] = self.store[item]["quantity"]
+        # except:
+        #     print("Can't find items")
+        #     print(self.store)
+
+        self.test_signal.emit(self.store)
+
+    def refresh(self):
+        self.webview.page().runJavaScript(js.store_items, self.update_gui)
+
+    def update_store(self, name, increase):
+        if increase:
+            self.store[name]["to_buy"] += 1
+        elif self.store[name]["to_buy"] > self.store[name]["quantity"]:
+            self.store[name]["to_buy"] -= 1
+
+        self.test_signal.emit(self.store)
 
     def _run_js(self):
         self.webview.page().runJavaScript(self.text_input.text())
@@ -77,7 +114,6 @@ class MainWindow(qtw.QMainWindow):
 
     def _stop_clicker(self):
         self.webview.page().runJavaScript(js.stop_clicker)
-        self.test_signal.emit(self.store)
 
 
 if __name__ == "__main__":

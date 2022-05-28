@@ -5,6 +5,7 @@ class Building(qtw.QWidget):
     def __init__(self, name, update_store):
         super().__init__()
         layout = qtw.QHBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
         self.name = name
 
         img_lbl = qtw.QLabel("IMG")

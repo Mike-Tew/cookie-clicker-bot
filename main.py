@@ -84,16 +84,24 @@ class MainWindow(qtw.QMainWindow):
         self.show()
 
     def update_gui(self, var):
-        # try:
         for item in var:
             self.store[item]["quantity"] = var[item]
-            if self.store[item]["quantity"] > self.store[item]["to_buy"]:
-                self.store[item]["to_buy"] = self.store[item]["quantity"]
-        # except:
-        #     print("Can't find items")
-        #     print(self.store)
+            quantity = self.store[item]["quantity"]
+            to_buy = self.store[item]["to_buy"]
+            if quantity >= to_buy:
+                self.store[item]["to_buy"] = quantity
 
         self.test_signal.emit(self.store)
+        self.purchase_list = [
+            building
+            for building in self.store
+            if self.store[building]["to_buy"] > self.store[building]["quantity"]
+        ]
+
+        for building in self.purchase_list:
+            self.webview.page().runJavaScript(
+                js.buy_building.replace("<BUILDING>", building)
+            )
 
     def refresh(self):
         self.webview.page().runJavaScript(js.store_items, self.update_gui)

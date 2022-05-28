@@ -23,9 +23,15 @@ stop_clicker = "clearInterval(clicker);"
 buy_bulk = "Game.buyBulk = 10;"
 
 store_items = """
-items = {}
-Object.keys(Game.Objects).forEach(key => {
-    items[key] = Game.Objects[key].amount
-});
-items;
+    items = {}
+    Object.keys(Game.Objects).forEach(key => {
+        items[key] = Game.Objects[key].amount
+    });
+    items;
+"""
+
+buy_building = """
+    if (typeof variable === 'undefined') {
+        Game.Objects['<BUILDING>'].buy(1)
+    }
 """

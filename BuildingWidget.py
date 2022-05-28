@@ -12,7 +12,7 @@ class Building(qtw.QWidget):
         layout.addWidget(img_lbl)
         name_lbl = qtw.QLabel(name)
         layout.addWidget(name_lbl)
-        self.amount_lbl = qtw.QLabel("100/150")
+        self.amount_lbl = qtw.QLabel("0/0")
         layout.addWidget(self.amount_lbl)
 
         down_btn = qtw.QPushButton("-")

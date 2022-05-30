@@ -31,7 +31,15 @@ store_items = """
 """
 
 buy_building = """
-    if (typeof variable === 'undefined') {
-        Game.Objects['<BUILDING>'].buy(1)
+    building = Game.Objects['<BUILDING>'];
+    if (typeof building !== 'undefined') {
+        Game.Objects['<BUILDING>'].buy(1);
+    }
+"""
+
+buy_upgrade = """
+    upgrade = Game.UpgradesInStore[0];
+    if (typeof upgrade !== 'undefined') {
+        Game.UpgradesInStore[0].buy();
     }
 """

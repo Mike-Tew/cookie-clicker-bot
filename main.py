@@ -70,7 +70,7 @@ class MainWindow(qtw.QMainWindow):
         store_layout.layout().addWidget(self.toggle_clicker_btn)
         self.toggle_clicker_btn.setCheckable(True)
 
-        self.upgrades_btn = qtw.QPushButton("UPGRADES", clicked=self.auto_buy_upgrades)
+        self.upgrades_btn = qtw.QPushButton("UPGRADES")
         store_layout.layout().addWidget(self.upgrades_btn)
         self.upgrades_btn.setCheckable(True)
 

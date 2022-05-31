@@ -1,3 +1,4 @@
+import os
 import sys
 
 from PyQt5 import QtCore as qtc
@@ -74,6 +75,9 @@ class MainWindow(qtw.QMainWindow):
         store_layout.layout().addWidget(self.upgrades_btn)
         self.upgrades_btn.setCheckable(True)
 
+        self.auto_save_btn = qtw.QPushButton("AUTOSAVE", clicked=self.auto_save)
+        store_layout.layout().addWidget(self.auto_save_btn)
+
         self.building_widgets = {
             building: Building(building, self.update_store) for building in self.store
         }
@@ -82,6 +86,14 @@ class MainWindow(qtw.QMainWindow):
             self.test_signal.connect(building.test_slot)
 
         self.show()
+
+    def save_file(self, save_data):
+        print(save_data)
+        with open("save.txt", "w") as open_file:
+            open_file.write(save_data)
+
+    def auto_save(self):
+        self.webview.page().runJavaScript("Game.WriteSave(1)", self.save_file)
 
     def loading_finished(self):
         print("Finished loading webpage")

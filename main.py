@@ -41,6 +41,8 @@ class MainWindow(qtw.QMainWindow):
         self.setWindowTitle("Cookie Clicker Bot")
         self.setFixedSize(1900, 1080)
 
+        self._create_menu_bar()
+
         navigation = self.addToolBar("Navigation")
         style = self.style()
 
@@ -85,11 +87,32 @@ class MainWindow(qtw.QMainWindow):
             building_layout.layout().addWidget(building)
             self.test_signal.connect(building.test_slot)
 
+        self.statusBar().showMessage("Launching Cookie Clicker")
+
         self.show()
+
+    def _create_menu_bar(self):
+        menu_bar = qtw.QMenuBar(self)
+        file_menu = menu_bar.addMenu("&File")
+        options_menu = menu_bar.addMenu("&Options")
+        options_menu.triggered.connect(self.test_checks)
+
+        file_menu.addAction("Open")
+        file_menu.addAction("&Exit", self.destroy)
+
+        options_menu.addAction("1 Minute").setCheckable(True)
+        options_menu.addAction("10 Minutes").setCheckable(True)
+        options_menu.addAction("1 Hour").setCheckable(True)
+
+        self.setMenuBar(menu_bar)
+
+    def test_checks(self, action):
+        print(action.isChecked(), action.text())
+
 
     def save_file(self, save_data):
         print(save_data)
-        with open("save.txt", "w") as open_file:
+        with open("save.txt", "w", encoding="utf-8") as open_file:
             open_file.write(save_data)
 
     def auto_save(self):

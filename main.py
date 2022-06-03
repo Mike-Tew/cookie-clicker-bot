@@ -97,9 +97,10 @@ class MainWindow(qtw.QMainWindow):
         options_menu = menu_bar.addMenu("&Options")
         options_menu.triggered.connect(self.test_checks)
 
-        file_menu.addAction("Open")
-        file_menu.addAction("&Exit", self.destroy)
+        file_menu.addAction("Open", self.open_file)
+        file_menu.addAction("&Exit", sys.exit)
 
+        options_menu.addAction("Autosave")
         options_menu.addAction("1 Minute").setCheckable(True)
         options_menu.addAction("10 Minutes").setCheckable(True)
         options_menu.addAction("1 Hour").setCheckable(True)
@@ -109,6 +110,15 @@ class MainWindow(qtw.QMainWindow):
     def test_checks(self, action):
         print(action.isChecked(), action.text())
 
+    def open_file(self):
+        file_name = qtw.QFileDialog.getOpenFileName(self, "", "", "txt files (*.txt)")
+        try:
+            with open(file_name[0], "r", encoding="utf-8") as open_file:
+                save_data = open_file.read()
+            self.webview.page().runJavaScript(f"Game.LoadSave('{save_data}');")
+            self.statusBar().showMessage("Save File Loaded.")
+        except:
+            self.statusBar().showMessage("Could not load file.")
 
     def save_file(self, save_data):
         print(save_data)

@@ -10,11 +10,14 @@ import js
 from widgets.BuildingWidget import Building
 from widgets.Clicker import Clicker
 from widgets.Dial import Dial
+from widgets.Upgrades import Upgrades
 
 
 class MainWindow(qtw.QMainWindow):
     test_signal = qtc.pyqtSignal(object)
     clicker_active = qtc.pyqtSignal(bool)
+    buy_upgrades = False
+    buy_buildings = False
     store = {
         "Cursor": {"img": 1, "quantity": 0, "to_buy": 0},
         "Grandma": {"img": 1, "quantity": 0, "to_buy": 0},
@@ -86,9 +89,13 @@ class MainWindow(qtw.QMainWindow):
         # self.speed_dial.valueChanged.connect(self.val_change)
         # store_layout.layout().addWidget(self.speed_dial)
 
-        self.upgrades_btn = qtw.QPushButton("UPGRADES")
-        store_layout.layout().addWidget(self.upgrades_btn)
-        self.upgrades_btn.setCheckable(True)
+        self.upgrades_widget = Upgrades(
+            "Auto Buy", self.buy_upgrades, self.buy_buildings
+        )
+        store_layout.layout().addWidget(self.upgrades_widget)
+        # self.upgrades_btn = qtw.QPushButton("UPGRADES")
+        # store_layout.layout().addWidget(self.upgrades_btn)
+        # self.upgrades_btn.setCheckable(True)
 
         # Building Widgets
         self.building_widgets = {
@@ -162,8 +169,8 @@ class MainWindow(qtw.QMainWindow):
             if self.store[building]["to_buy"] > self.store[building]["quantity"]
         ]
 
-        if self.upgrades_btn.isChecked():
-            self.webview.page().runJavaScript(js.buy_upgrade)
+        # if self.upgrades_btn.isChecked():
+        #     self.webview.page().runJavaScript(js.buy_upgrade)
 
         for building in self.purchase_list:
             self.webview.page().runJavaScript(
@@ -171,6 +178,7 @@ class MainWindow(qtw.QMainWindow):
             )
 
     def refresh(self):
+        print(self.buy_buildings, self.buy_upgrades)
         self.webview.page().runJavaScript(js.store_items, self.update_gui)
 
     def update_store(self, name, increase):

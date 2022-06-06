@@ -7,11 +7,14 @@ from PyQt5 import QtWebEngineWidgets as qtwe
 from PyQt5 import QtWidgets as qtw
 
 import js
-from BuildingWidget import Building
+from widgets.BuildingWidget import Building
+from widgets.Clicker import Clicker
+from widgets.Dial import Dial
 
 
 class MainWindow(qtw.QMainWindow):
     test_signal = qtc.pyqtSignal(object)
+    clicker_active = qtc.pyqtSignal(bool)
     store = {
         "Cursor": {"img": 1, "quantity": 0, "to_buy": 0},
         "Grandma": {"img": 1, "quantity": 0, "to_buy": 0},
@@ -69,17 +72,25 @@ class MainWindow(qtw.QMainWindow):
         self.webview.load(qtc.QUrl("https://orteil.dashnet.org/cookieclicker/"))
         self.webview.loadFinished.connect(self.loading_finished)
 
-        self.toggle_clicker_btn = qtw.QPushButton("START", clicked=self.toggle_clicker)
-        store_layout.layout().addWidget(self.toggle_clicker_btn)
-        self.toggle_clicker_btn.setCheckable(True)
+        # Store Widgets
+        self.clicker_btn = Clicker(self.webview)
+        store_layout.layout().addWidget(self.clicker_btn)
+
+        self.custom_dial = Dial("Set Speed")
+        store_layout.layout().addWidget(self.custom_dial)
+        # self.speed_dial = qtw.QDial()
+        # self.speed_dial.setWrapping(False)
+        # self.speed_dial.setMinimum(10)
+        # self.speed_dial.setMaximum(100)
+        # self.speed_dial.setValue(30)
+        # self.speed_dial.valueChanged.connect(self.val_change)
+        # store_layout.layout().addWidget(self.speed_dial)
 
         self.upgrades_btn = qtw.QPushButton("UPGRADES")
         store_layout.layout().addWidget(self.upgrades_btn)
         self.upgrades_btn.setCheckable(True)
 
-        self.auto_save_btn = qtw.QPushButton("AUTOSAVE", clicked=self.auto_save)
-        store_layout.layout().addWidget(self.auto_save_btn)
-
+        # Building Widgets
         self.building_widgets = {
             building: Building(building, self.update_store) for building in self.store
         }
@@ -90,6 +101,9 @@ class MainWindow(qtw.QMainWindow):
         self.statusBar().showMessage("Launching Cookie Clicker")
 
         self.show()
+
+    def val_change(self, value):
+        print(value)
 
     def _create_menu_bar(self):
         menu_bar = qtw.QMenuBar(self)
@@ -120,13 +134,12 @@ class MainWindow(qtw.QMainWindow):
         except:
             self.statusBar().showMessage("Could not load file.")
 
-    def save_file(self, save_data):
-        print(save_data)
-        with open("save.txt", "w", encoding="utf-8") as open_file:
-            open_file.write(save_data)
-
     def auto_save(self):
         self.webview.page().runJavaScript("Game.WriteSave(1)", self.save_file)
+
+    def save_file(self, save_data):
+        with open("save.txt", "w", encoding="utf-8") as open_file:
+            open_file.write(save_data)
 
     def loading_finished(self):
         print("Finished loading webpage")

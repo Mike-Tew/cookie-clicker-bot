@@ -1,12 +1,15 @@
+from PyQt5 import QtCore as qtc
 from PyQt5 import QtWidgets as qtw
 
 
 class Dial(qtw.QWidget):
-    def __init__(self, text):
+    dial_sig = qtc.pyqtSignal(int)
+
+    def __init__(self):
         super().__init__()
         self.setLayout(qtw.QVBoxLayout())
 
-        self.label = qtw.QLabel(text)
+        self.label = qtw.QLabel("Set Speed")
         self.layout().addWidget(self.label)
 
         self.dial = qtw.QDial()

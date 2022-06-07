@@ -7,105 +7,27 @@ from PyQt5 import QtWebEngineWidgets as qtwe
 from PyQt5 import QtWidgets as qtw
 
 import js
-from widgets.BuildingWidget import Building
-from widgets.Clicker import Clicker
-from widgets.Dial import Dial
-from widgets.Upgrades import Upgrades
+from model.model import Model
+from view.view import View
 
 
 class MainWindow(qtw.QMainWindow):
-    test_signal = qtc.pyqtSignal(object)
-    clicker_active = qtc.pyqtSignal(bool)
-    buy_upgrades = False
-    buy_buildings = False
-    store = {
-        "Cursor": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Grandma": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Farm": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Mine": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Factory": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Bank": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Temple": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Wizard tower": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Shipment": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Alchemy lab": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Portal": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Time machine": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Antimatter condenser": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Prism": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Chancemaker": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Fractal engine": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Javascript console": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Idleverse": {"img": 1, "quantity": 0, "to_buy": 0},
-    }
-    purchase_list = []
-    buy_upgrades = False
-
     def __init__(self):
         super().__init__()
 
         self.setWindowTitle("Cookie Clicker Bot")
         self.setFixedSize(1900, 1080)
-
         self._create_menu_bar()
 
-        navigation = self.addToolBar("Navigation")
-        style = self.style()
+        webview = qtwe.QWebEngineView()
+        self.model = Model(webview)
+        self.view = View(webview, self.model.store)
+        self.setCentralWidget(self.view)
 
-        self.urlbar = qtw.QLineEdit()
-        navigation.addWidget(self.urlbar)
-        self.go = navigation.addAction("Go")
-        self.go.setIcon(style.standardIcon(style.SP_DialogOkButton))
-
-        # Central Widget
-        self.widget = qtw.QWidget()
-        self.widget.setLayout(qtw.QHBoxLayout())
-        self.setCentralWidget(self.widget)
-
-        webview_layout = qtw.QVBoxLayout()
-        self.widget.layout().addLayout(webview_layout, 4)
-        building_layout = qtw.QVBoxLayout()
-        self.widget.layout().addLayout(building_layout, 1)
-        store_layout = qtw.QHBoxLayout()
-        building_layout.addLayout(store_layout)
-        store_layout.setContentsMargins(20, 20, 20, 20)
-
-        self.webview = qtwe.QWebEngineView()
-        webview_layout.addWidget(self.webview)
-        self.webview.load(qtc.QUrl("https://orteil.dashnet.org/cookieclicker/"))
-        self.webview.loadFinished.connect(self.loading_finished)
-
-        # Store Widgets
-        self.clicker_btn = Clicker(self.webview)
-        store_layout.layout().addWidget(self.clicker_btn)
-
-        self.custom_dial = Dial("Set Speed")
-        store_layout.layout().addWidget(self.custom_dial)
-        # self.speed_dial = qtw.QDial()
-        # self.speed_dial.setWrapping(False)
-        # self.speed_dial.setMinimum(10)
-        # self.speed_dial.setMaximum(100)
-        # self.speed_dial.setValue(30)
-        # self.speed_dial.valueChanged.connect(self.val_change)
-        # store_layout.layout().addWidget(self.speed_dial)
-
-        self.upgrades_widget = Upgrades(
-            "Auto Buy", self.buy_upgrades, self.buy_buildings
-        )
-        store_layout.layout().addWidget(self.upgrades_widget)
-        # self.upgrades_btn = qtw.QPushButton("UPGRADES")
-        # store_layout.layout().addWidget(self.upgrades_btn)
-        # self.upgrades_btn.setCheckable(True)
-
-        # Building Widgets
-        self.building_widgets = {
-            building: Building(building, self.update_store) for building in self.store
-        }
-        for building in self.building_widgets.values():
-            building_layout.layout().addWidget(building)
-            self.test_signal.connect(building.test_slot)
-
-        self.statusBar().showMessage("Launching Cookie Clicker")
+        self.view.clicker_btn.click_sig.connect(self.model.toggle_clicker)
+        self.view.speed_dial.dial.valueChanged.connect(self.model.click_speed)
+        self.view.upgrades_widget.upg_check.toggled.connect(self.val_change)
+        self.view.upgrades_widget.build_check.toggled.connect(self.val_change)
 
         self.show()
 

@@ -27,7 +27,6 @@ class Model(qtc.QObject):
         "Idleverse": {"img": 1, "quantity": 0, "to_buy": 0},
     }
     purchase_list = []
-    buy_upgrades = False
 
     def __init__(self, webview):
         super().__init__()
@@ -41,3 +40,9 @@ class Model(qtc.QObject):
 
     def click_speed(self, value):
         print(value)
+
+    def auto_upg(self, value):
+        self.buy_upgrades = value
+
+    def auto_build(self, value):
+        self.buy_buildings = value

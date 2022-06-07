@@ -24,10 +24,10 @@ class MainWindow(qtw.QMainWindow):
         self.view = View(webview, self.model.store)
         self.setCentralWidget(self.view)
 
-        self.view.clicker_btn.click_sig.connect(self.model.toggle_clicker)
+        self.view.clicker_btn.clicker_btn.toggled.connect(self.model.toggle_clicker)
         self.view.speed_dial.dial.valueChanged.connect(self.model.click_speed)
-        self.view.upgrades_widget.upg_check.toggled.connect(self.val_change)
-        self.view.upgrades_widget.build_check.toggled.connect(self.val_change)
+        self.view.upgrades_widget.upg_check.toggled.connect(self.model.auto_upg)
+        self.view.upgrades_widget.build_check.toggled.connect(self.model.auto_build)
 
         self.show()
 

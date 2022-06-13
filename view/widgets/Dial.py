@@ -13,7 +13,7 @@ class Dial(qtw.QWidget):
         self.layout().addWidget(self.label)
 
         self.dial = qtw.QDial()
-        self.dial.setMinimum(10)
-        self.dial.setMaximum(100)
-        self.dial.setValue(30)
+        self.dial.setMinimum(1)
+        self.dial.setMaximum(10)
+        self.dial.setValue(5)
         self.layout().addWidget(self.dial)

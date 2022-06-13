@@ -25,7 +25,7 @@ class MainWindow(qtw.QMainWindow):
         self.setCentralWidget(self.view)
 
         self.view.clicker_btn.clicker_btn.toggled.connect(self.model.toggle_clicker)
-        self.view.speed_dial.dial.valueChanged.connect(self.model.click_speed)
+        self.view.speed_dial.dial.valueChanged.connect(self.model.change_click_speed)
         self.view.upgrades_widget.upg_check.toggled.connect(self.model.auto_upg)
         self.view.upgrades_widget.build_check.toggled.connect(self.model.auto_build)
 
@@ -110,14 +110,6 @@ class MainWindow(qtw.QMainWindow):
             self.store[name]["to_buy"] -= 1
 
         self.test_signal.emit(self.store)
-
-    def toggle_clicker(self):
-        if self.toggle_clicker_btn.isChecked():
-            self.toggle_clicker_btn.setText("STOP")
-            self.webview.page().runJavaScript(js.clicker)
-        else:
-            self.toggle_clicker_btn.setText("START")
-            self.webview.page().runJavaScript(js.stop_clicker)
 
 
 if __name__ == "__main__":

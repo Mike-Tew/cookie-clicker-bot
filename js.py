@@ -2,9 +2,9 @@ add_cookies = "Game.cookies += 100;"
 
 clicker = """
     if (typeof clicker === 'undefined') {
-        autoClicker = function(clicksAtOnce, repeatInterval) {
+        const autoClicker = (clicksAtOnce, repeatInterval) => {
             let cheated = false;
-            let intoTheAbyss = function() {
+            const intoTheAbyss = () => {
                 if(!cheated) {
                     cheated = true;
                     for(let i = 0; i < clicksAtOnce; i++) {
@@ -16,7 +16,7 @@ clicker = """
             };
             return setInterval(intoTheAbyss, repeatInterval);
         };
-        clicker = autoClicker(10, 100);
+        clicker = autoClicker(<CLICKS>, 100);
     }
 """
 

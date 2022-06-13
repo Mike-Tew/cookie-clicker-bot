@@ -27,7 +27,7 @@ class View(qtw.QWidget):
 
         self.webview = webview
         webview_layout.addWidget(self.webview)
-        self.webview.load(qtc.QUrl("https://orteil.dashnet.org/cookieclicker/"))
+        self.webview.load(qtc.QUrl("http://orteil.dashnet.org/cookieclicker/"))
         self.webview.loadFinished.connect(self.loading_finished)
 
         self.clicker_btn = Clicker(self.webview)

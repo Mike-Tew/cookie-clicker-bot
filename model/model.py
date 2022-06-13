@@ -4,6 +4,7 @@ from PyQt5 import QtCore as qtc
 
 class Model(qtc.QObject):
     test_signal = qtc.pyqtSignal(object)
+    click_speed = 5
     buy_upgrades = False
     buy_buildings = False
     store = {
@@ -34,12 +35,14 @@ class Model(qtc.QObject):
 
     def toggle_clicker(self, value):
         if value:
-            self.webview.page().runJavaScript(js.clicker)
+            self.webview.page().runJavaScript(
+                js.clicker.replace("<CLICKS>", str(self.click_speed))
+            )
         else:
             self.webview.page().runJavaScript(js.stop_clicker)
 
-    def click_speed(self, value):
-        print(value)
+    def change_click_speed(self, value):
+        self.click_speed = value
 
     def auto_upg(self, value):
         self.buy_upgrades = value

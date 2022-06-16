@@ -3,10 +3,10 @@ from PyQt5 import QtCore as qtc
 
 
 class Model(qtc.QObject):
-    test_signal = qtc.pyqtSignal(object)
     click_speed = 5
     buy_upgrades = False
     buy_buildings = False
+    store_sig = qtc.pyqtSignal(object)
     store = {
         "Cursor": {"img": 1, "quantity": 0, "to_buy": 0},
         "Grandma": {"img": 1, "quantity": 0, "to_buy": 0},
@@ -49,3 +49,10 @@ class Model(qtc.QObject):
 
     def auto_build(self, value):
         self.buy_buildings = value
+
+    def update_store(self, buy, name):
+        print(buy, name)
+        self.send_store()
+
+    def send_store(self):
+        self.store_sig.emit(self.store)

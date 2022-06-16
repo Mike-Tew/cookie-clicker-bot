@@ -12,6 +12,8 @@ from view.widgets.Upgrades import Upgrades
 
 
 class View(qtw.QWidget):
+    upd_store = qtc.pyqtSignal(str, bool)
+
     def __init__(self, webview, store):
         super().__init__()
         self.store = store
@@ -40,13 +42,12 @@ class View(qtw.QWidget):
         store_layout.layout().addWidget(self.upgrades_widget)
 
         self.building_widgets = {
-            building: Building(building, self.update_store) for building in self.store
+            building: Building(building, self.upd_store)
+            for building in self.store
         }
         for building in self.building_widgets.values():
             building_layout.layout().addWidget(building)
-            # self.test_signal.connect(building.test_slot)
-
-        # self.statusBar().showMessage("Launching Cookie Clicker")
+            # self.upd_store.connect(building.test_slot)
 
     def loading_finished(self):
         pass

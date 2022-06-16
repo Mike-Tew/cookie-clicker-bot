@@ -28,8 +28,11 @@ class MainWindow(qtw.QMainWindow):
         self.view.speed_dial.dial.valueChanged.connect(self.model.change_click_speed)
         self.view.upgrades_widget.upg_check.toggled.connect(self.model.auto_upg)
         self.view.upgrades_widget.build_check.toggled.connect(self.model.auto_build)
+        self.view.upd_store.connect(self.model.update_store)
+        self.model.store_sig.connect(self.val_change)
 
         self.show()
+        self.statusBar().showMessage("Launching Cookie Clicker")
 
     def val_change(self, value):
         print(value)

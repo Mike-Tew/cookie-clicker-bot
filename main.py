@@ -29,7 +29,8 @@ class MainWindow(qtw.QMainWindow):
         self.view.upgrades_widget.upg_check.toggled.connect(self.model.auto_upg)
         self.view.upgrades_widget.build_check.toggled.connect(self.model.auto_build)
         self.view.upd_store.connect(self.model.update_store)
-        self.model.store_sig.connect(self.val_change)
+        for building in self.view.building_widgets.values():
+            self.model.store_sig.connect(building.upd_lbl)
 
         self.show()
         self.statusBar().showMessage("Launching Cookie Clicker")
@@ -53,6 +54,12 @@ class MainWindow(qtw.QMainWindow):
 
         self.setMenuBar(menu_bar)
 
+    def loading_finished(self):
+        print("Finished loading webpage")
+        self.timer = qtc.QTimer()
+        self.timer.timeout.connect(self.refresh)
+        self.timer.start(3000)
+
     def test_checks(self, action):
         print(action.isChecked(), action.text())
 
@@ -72,47 +79,6 @@ class MainWindow(qtw.QMainWindow):
     def save_file(self, save_data):
         with open("save.txt", "w", encoding="utf-8") as open_file:
             open_file.write(save_data)
-
-    def loading_finished(self):
-        print("Finished loading webpage")
-        self.timer = qtc.QTimer()
-        self.timer.timeout.connect(self.refresh)
-        self.timer.start(3000)
-
-    def update_gui(self, var):
-        for item in var:
-            self.store[item]["quantity"] = var[item]
-            quantity = self.store[item]["quantity"]
-            to_buy = self.store[item]["to_buy"]
-            if quantity >= to_buy:
-                self.store[item]["to_buy"] = quantity
-
-        self.test_signal.emit(self.store)
-        self.purchase_list = [
-            building
-            for building in self.store
-            if self.store[building]["to_buy"] > self.store[building]["quantity"]
-        ]
-
-        # if self.upgrades_btn.isChecked():
-        #     self.webview.page().runJavaScript(js.buy_upgrade)
-
-        for building in self.purchase_list:
-            self.webview.page().runJavaScript(
-                js.buy_building.replace("<BUILDING>", building)
-            )
-
-    def refresh(self):
-        print(self.buy_buildings, self.buy_upgrades)
-        self.webview.page().runJavaScript(js.store_items, self.update_gui)
-
-    def update_store(self, name, increase):
-        if increase:
-            self.store[name]["to_buy"] += 1
-        elif self.store[name]["to_buy"] > self.store[name]["quantity"]:
-            self.store[name]["to_buy"] -= 1
-
-        self.test_signal.emit(self.store)
 
 
 if __name__ == "__main__":

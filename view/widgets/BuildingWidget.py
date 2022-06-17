@@ -18,12 +18,10 @@ class Building(qtw.QWidget):
 
         down_btn = qtw.QPushButton("-")
         down_btn.clicked.connect(lambda: upd_store.emit(name, False))
-        down_btn.clicked.connect(self.test_slot)
         layout.addWidget(down_btn)
 
         up_btn = qtw.QPushButton("+")
         up_btn.clicked.connect(lambda: upd_store.emit(name, True))
-        up_btn.clicked.connect(self.test_slot)
         layout.addWidget(up_btn)
 
         self.setLayout(layout)
@@ -31,7 +29,9 @@ class Building(qtw.QWidget):
     def test_slot(self):
         print("Test Slot")
 
-        # quantity = store[self.name]["quantity"]
-        # to_buy = store[self.name]["to_buy"]
-        # formatted_lbl = f"{quantity}/{to_buy}"
-        # self.amount_lbl.setText(formatted_lbl)
+
+    def upd_lbl(self, store):
+        quantity = store[self.name]["quantity"]
+        to_buy = store[self.name]["to_buy"]
+        formatted_lbl = f"{quantity}/{to_buy}"
+        self.amount_lbl.setText(formatted_lbl)

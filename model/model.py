@@ -8,9 +8,9 @@ class Model(qtc.QObject):
     buy_buildings = False
     store_sig = qtc.pyqtSignal(object)
     store = {
-        "Cursor": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Grandma": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Farm": {"img": 1, "quantity": 0, "to_buy": 0},
+        "Cursor": {"img": 1, "quantity": 1, "to_buy": 0},
+        "Grandma": {"img": 1, "quantity": 2, "to_buy": 0},
+        "Farm": {"img": 1, "quantity": 0, "to_buy": 4},
         "Mine": {"img": 1, "quantity": 0, "to_buy": 0},
         "Factory": {"img": 1, "quantity": 0, "to_buy": 0},
         "Bank": {"img": 1, "quantity": 0, "to_buy": 0},
@@ -26,6 +26,7 @@ class Model(qtc.QObject):
         "Fractal engine": {"img": 1, "quantity": 0, "to_buy": 0},
         "Javascript console": {"img": 1, "quantity": 0, "to_buy": 0},
         "Idleverse": {"img": 1, "quantity": 0, "to_buy": 0},
+        "Cortex baker": {"img": 1, "quantity": 0, "to_buy": 0},
     }
     purchase_list = []
 
@@ -50,9 +51,36 @@ class Model(qtc.QObject):
     def auto_build(self, value):
         self.buy_buildings = value
 
-    def update_store(self, buy, name):
-        print(buy, name)
-        self.send_store()
-
     def send_store(self):
         self.store_sig.emit(self.store)
+
+    def update_store(self, name, increase):
+        if increase:
+            self.store[name]["to_buy"] += 1
+        elif self.store[name]["to_buy"] > self.store[name]["quantity"]:
+            self.store[name]["to_buy"] -= 1
+
+        self.send_store()
+        self.refresh()
+
+    def refresh(self):
+        self.webview.page().runJavaScript(js.store_items, self.update_gui)
+
+    def update_gui(self, var):
+        for item in var:
+            self.store[item]["quantity"] = var[item]
+            quantity = self.store[item]["quantity"]
+            to_buy = self.store[item]["to_buy"]
+            if quantity >= to_buy:
+                self.store[item]["to_buy"] = quantity
+
+        self.purchase_list = [
+            building
+            for building in self.store
+            if self.store[building]["to_buy"] > self.store[building]["quantity"]
+        ]
+
+        for building in self.purchase_list:
+            self.webview.page().runJavaScript(
+                js.buy_building.replace("<BUILDING>", building)
+            )

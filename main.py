@@ -6,7 +6,6 @@ from PyQt5 import QtGui as qtg
 from PyQt5 import QtWebEngineWidgets as qtwe
 from PyQt5 import QtWidgets as qtw
 
-import js
 from model.model import Model
 from view.view import View
 
@@ -85,4 +84,4 @@ if __name__ == "__main__":
     app = qtw.QApplication(sys.argv)
     mw = MainWindow()
 
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

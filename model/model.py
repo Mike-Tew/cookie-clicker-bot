@@ -1,5 +1,6 @@
-import js
 from PyQt5 import QtCore as qtc
+
+import js
 
 
 class Model(qtc.QObject):
@@ -30,9 +31,17 @@ class Model(qtc.QObject):
     }
     purchase_list = []
 
+
+
     def __init__(self, webview):
         super().__init__()
         self.webview = webview
+        self.timer = qtc.QTimer()
+        self.timer.timeout.connect(self.purchase_buildings)
+        # self.timer.start(500)
+
+    def update_gui_loop(self):
+        self.store_sig.emit(self.store)
 
     def toggle_clicker(self, value):
         if value:
@@ -60,20 +69,23 @@ class Model(qtc.QObject):
         elif self.store[name]["to_buy"] > self.store[name]["quantity"]:
             self.store[name]["to_buy"] -= 1
 
-        self.send_store()
         self.refresh()
+        self.purchase_buildings()
 
     def refresh(self):
-        self.webview.page().runJavaScript(js.store_items, self.update_gui)
+        self.webview.page().runJavaScript(js.store_items, self.refresh_store)
 
-    def update_gui(self, var):
-        for item in var:
-            self.store[item]["quantity"] = var[item]
+    def refresh_store(self, current_store):
+        for item in current_store:
+            self.store[item]["quantity"] = current_store[item]
             quantity = self.store[item]["quantity"]
             to_buy = self.store[item]["to_buy"]
             if quantity >= to_buy:
                 self.store[item]["to_buy"] = quantity
 
+        self.send_store()
+
+    def purchase_buildings(self):
         self.purchase_list = [
             building
             for building in self.store
@@ -84,3 +96,6 @@ class Model(qtc.QObject):
             self.webview.page().runJavaScript(
                 js.buy_building.replace("<BUILDING>", building)
             )
+
+        self.refresh()
+        self.timer.start(500)

@@ -34,13 +34,6 @@ class MainWindow(qtw.QMainWindow):
 
         self.show()
         self.statusBar().showMessage("Launching Cookie Clicker")
-        self.view.webview.loadFinished.connect(self.print_load)
-
-    def check_page_load(self):
-        self.model.webview.page().runJavaScript(js.check_page_load, self.print_load)
-
-    def print_load(self, val):
-        print(val)
 
     def val_change(self, value):
         print(value)

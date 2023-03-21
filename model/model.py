@@ -31,14 +31,15 @@ class Model(qtc.QObject):
     }
     purchase_list = []
 
-
-
     def __init__(self, webview):
         super().__init__()
         self.webview = webview
+        self.webview.loadFinished.connect(self.start_game_loop)
         self.timer = qtc.QTimer()
         self.timer.timeout.connect(self.purchase_buildings)
-        # self.timer.start(500)
+
+    def start_game_loop(self):
+        self.timer.start(500)
 
     def update_gui_loop(self):
         self.store_sig.emit(self.store)
@@ -98,4 +99,4 @@ class Model(qtc.QObject):
             )
 
         self.refresh()
-        self.timer.start(500)
+        # self.timer.start(500)

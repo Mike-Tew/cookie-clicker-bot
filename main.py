@@ -6,6 +6,7 @@ from PyQt5 import QtGui as qtg
 from PyQt5 import QtWebEngineWidgets as qtwe
 from PyQt5 import QtWidgets as qtw
 
+import js
 from model.model import Model
 from view.view import View
 
@@ -33,6 +34,13 @@ class MainWindow(qtw.QMainWindow):
 
         self.show()
         self.statusBar().showMessage("Launching Cookie Clicker")
+        self.view.webview.loadFinished.connect(self.print_load)
+
+    def check_page_load(self):
+        self.model.webview.page().runJavaScript(js.check_page_load, self.print_load)
+
+    def print_load(self, val):
+        print(val)
 
     def val_change(self, value):
         print(value)
@@ -52,12 +60,6 @@ class MainWindow(qtw.QMainWindow):
         options_menu.addAction("1 Hour").setCheckable(True)
 
         self.setMenuBar(menu_bar)
-
-    def loading_finished(self):
-        print("Finished loading webpage")
-        self.timer = qtc.QTimer()
-        self.timer.timeout.connect(self.refresh)
-        self.timer.start(3000)
 
     def test_checks(self, action):
         print(action.isChecked(), action.text())

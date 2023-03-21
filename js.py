@@ -1,5 +1,7 @@
 add_cookies = "Game.cookies += 100;"
 
+check_page_load = """Game.cookies;"""
+
 clicker = """
     if (typeof clicker === 'undefined') {
         const autoClicker = (clicksAtOnce, repeatInterval) => {
@@ -33,6 +35,7 @@ store_items = """
 """
 
 buy_building = """
+    Game.storeBulkButton(0);
     building = Game.Objects['<BUILDING>'];
     if (typeof building !== 'undefined') {
         Game.Objects['<BUILDING>'].buy(1);

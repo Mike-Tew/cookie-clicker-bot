@@ -27,7 +27,6 @@ class View(qtw.QWidget):
         self.webview = webview
         webview_layout.addWidget(self.webview)
         self.webview.load(qtc.QUrl("http://orteil.dashnet.org/cookieclicker/"))
-        self.webview.loadFinished.connect(self.loading_finished)
 
         self.clicker_btn = Clicker(self.webview)
         store_layout.layout().addWidget(self.clicker_btn)
@@ -45,9 +44,6 @@ class View(qtw.QWidget):
         for building in self.building_widgets.values():
             building_layout.layout().addWidget(building)
             # self.upd_store.connect(building.test_slot)
-
-    def loading_finished(self):
-        pass
 
     def update_store(self):
         pass

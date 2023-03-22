@@ -5,8 +5,8 @@ import js
 
 class Model(qtc.QObject):
     click_speed = 5
-    buy_upgrades = False
-    buy_buildings = False
+    auto_upg = False
+    auto_build = False
     store_sig = qtc.pyqtSignal(object)
     store = {
         "Cursor": {"img": 1, "quantity": 1, "to_buy": 0},
@@ -36,10 +36,16 @@ class Model(qtc.QObject):
         self.webview = webview
         self.webview.loadFinished.connect(self.start_game_loop)
         self.timer = qtc.QTimer()
-        self.timer.timeout.connect(self.purchase_buildings)
+        self.timer.timeout.connect(self.game_loop)
 
     def start_game_loop(self):
         self.timer.start(500)
+
+    def game_loop(self):
+        if self.auto_upg:
+            self.buy_upgrade()
+        if self.auto_build:
+            self.buy_buildings()
 
     def update_gui_loop(self):
         self.store_sig.emit(self.store)
@@ -52,14 +58,14 @@ class Model(qtc.QObject):
         else:
             self.webview.page().runJavaScript(js.stop_clicker)
 
-    def change_click_speed(self, value):
-        self.click_speed = value
+    def change_click_speed(self, speed):
+        self.click_speed = speed
 
-    def auto_upg(self, value):
-        self.buy_upgrades = value
+    def set_auto_upg(self, value):
+        self.auto_upg = value
 
-    def auto_build(self, value):
-        self.buy_buildings = value
+    def set_auto_build(self, value):
+        self.auto_build = value
 
     def send_store(self):
         self.store_sig.emit(self.store)
@@ -71,7 +77,7 @@ class Model(qtc.QObject):
             self.store[name]["to_buy"] -= 1
 
         self.refresh()
-        self.purchase_buildings()
+        self.buy_buildings()
 
     def refresh(self):
         self.webview.page().runJavaScript(js.store_items, self.refresh_store)
@@ -86,7 +92,10 @@ class Model(qtc.QObject):
 
         self.send_store()
 
-    def purchase_buildings(self):
+    def buy_upgrade(self):
+        self.webview.page().runJavaScript(js.buy_upgrade)
+
+    def buy_buildings(self):
         self.purchase_list = [
             building
             for building in self.store
@@ -99,4 +108,3 @@ class Model(qtc.QObject):
             )
 
         self.refresh()
-        # self.timer.start(500)

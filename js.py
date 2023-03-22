@@ -38,7 +38,7 @@ buy_building = """
     Game.storeBulkButton(0);
     building = Game.Objects['<BUILDING>'];
     if (typeof building !== 'undefined') {
-        Game.Objects['<BUILDING>'].buy(1);
+        building.buy(1);
     }
 """
 

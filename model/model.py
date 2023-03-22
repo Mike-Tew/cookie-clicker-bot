@@ -9,9 +9,9 @@ class Model(qtc.QObject):
     auto_build = False
     store_sig = qtc.pyqtSignal(object)
     store = {
-        "Cursor": {"img": 1, "quantity": 1, "to_buy": 0},
-        "Grandma": {"img": 1, "quantity": 2, "to_buy": 0},
-        "Farm": {"img": 1, "quantity": 0, "to_buy": 4},
+        "Cursor": {"img": 1, "quantity": 0, "to_buy": 0},
+        "Grandma": {"img": 1, "quantity": 0, "to_buy": 0},
+        "Farm": {"img": 1, "quantity": 0, "to_buy": 0},
         "Mine": {"img": 1, "quantity": 0, "to_buy": 0},
         "Factory": {"img": 1, "quantity": 0, "to_buy": 0},
         "Bank": {"img": 1, "quantity": 0, "to_buy": 0},
@@ -47,7 +47,7 @@ class Model(qtc.QObject):
         if self.auto_build:
             self.buy_buildings()
 
-    def update_gui_loop(self):
+    def update_gui(self):
         self.store_sig.emit(self.store)
 
     def toggle_clicker(self, value):
@@ -67,9 +67,6 @@ class Model(qtc.QObject):
     def set_auto_build(self, value):
         self.auto_build = value
 
-    def send_store(self):
-        self.store_sig.emit(self.store)
-
     def update_store(self, name, increase):
         if increase:
             self.store[name]["to_buy"] += 1
@@ -77,7 +74,6 @@ class Model(qtc.QObject):
             self.store[name]["to_buy"] -= 1
 
         self.refresh()
-        self.buy_buildings()
 
     def refresh(self):
         self.webview.page().runJavaScript(js.store_items, self.refresh_store)
@@ -90,7 +86,7 @@ class Model(qtc.QObject):
             if quantity >= to_buy:
                 self.store[item]["to_buy"] = quantity
 
-        self.send_store()
+        self.update_gui()
 
     def buy_upgrade(self):
         self.webview.page().runJavaScript(js.buy_upgrade)

@@ -45,6 +45,6 @@ buy_building = """
 buy_upgrade = """
     upgrade = Game.UpgradesInStore[0];
     if (typeof upgrade !== 'undefined') {
-        Game.UpgradesInStore[0].buy();
+        upgrade.buy();
     }
 """

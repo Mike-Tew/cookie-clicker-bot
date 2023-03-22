@@ -19,9 +19,9 @@ class MainWindow(qtw.QMainWindow):
         self.setFixedSize(1900, 1080)
         self._create_menu_bar()
 
-        webview = qtwe.QWebEngineView()
-        self.model = Model(webview)
-        self.view = View(webview, self.model.store)
+        self.webview = qtwe.QWebEngineView()
+        self.model = Model(self.webview)
+        self.view = View(self.webview, self.model.store)
         self.setCentralWidget(self.view)
 
         self.view.clicker_btn.clicker_btn.toggled.connect(self.model.toggle_clicker)

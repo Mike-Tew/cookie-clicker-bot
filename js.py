@@ -1,7 +1,3 @@
-add_cookies = "Game.cookies += 100;"
-
-check_page_load = """Game.cookies;"""
-
 clicker = """
     if (typeof clicker === 'undefined') {
         const autoClicker = (clicksAtOnce, repeatInterval) => {

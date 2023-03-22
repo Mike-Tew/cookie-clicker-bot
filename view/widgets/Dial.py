@@ -9,7 +9,7 @@ class Dial(qtw.QWidget):
         super().__init__()
         self.setLayout(qtw.QVBoxLayout())
 
-        self.label = qtw.QLabel("Set Speed")
+        self.label = qtw.QLabel("Click Speed")
         self.layout().addWidget(self.label)
 
         self.dial = qtw.QDial()

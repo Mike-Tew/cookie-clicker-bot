@@ -6,7 +6,7 @@ class Upgrades(qtw.QWidget):
         super().__init__()
         self.setLayout(qtw.QVBoxLayout())
 
-        self.label = qtw.QLabel("Auto Buy")
+        self.label = qtw.QLabel("Automate")
         self.layout().addWidget(self.label)
 
         self.upg_check = qtw.QCheckBox("Upgrades")

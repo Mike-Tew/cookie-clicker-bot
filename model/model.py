@@ -42,6 +42,7 @@ class Model(qtc.QObject):
         self.timer.start(500)
 
     def game_loop(self):
+        self.refresh()
         if self.auto_upg:
             self.buy_upgrade()
         if self.auto_build:

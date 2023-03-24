@@ -44,3 +44,9 @@ buy_upgrade = """
         upgrade.buy();
     }
 """
+
+click_golden = """
+    for (shimmer in Game.shimmers) {
+        Game.shimmers[shimmer].pop()
+    };
+"""

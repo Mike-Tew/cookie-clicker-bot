@@ -7,6 +7,7 @@ class Model(qtc.QObject):
     click_speed = 5
     auto_upg = False
     auto_build = False
+    auto_golden = False
     store_sig = qtc.pyqtSignal(object)
     store = {
         "Cursor": {"img": 1, "quantity": 0, "to_buy": 0},
@@ -47,6 +48,11 @@ class Model(qtc.QObject):
             self.buy_upgrade()
         if self.auto_build:
             self.buy_buildings()
+        if self.auto_golden:
+            self.click_golden()
+
+    def click_golden(self):
+        self.webview.page().runJavaScript(js.click_golden)
 
     def update_gui(self):
         self.store_sig.emit(self.store)
@@ -67,6 +73,9 @@ class Model(qtc.QObject):
 
     def set_auto_build(self, value):
         self.auto_build = value
+
+    def set_auto_golden(self, value):
+        self.auto_golden = value
 
     def update_store(self, name, increase):
         if increase:

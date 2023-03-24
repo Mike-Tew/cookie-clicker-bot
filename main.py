@@ -28,6 +28,9 @@ class MainWindow(qtw.QMainWindow):
         self.view.speed_dial.dial.valueChanged.connect(self.model.change_click_speed)
         self.view.upgrades_widget.upg_check.toggled.connect(self.model.set_auto_upg)
         self.view.upgrades_widget.build_check.toggled.connect(self.model.set_auto_build)
+        self.view.upgrades_widget.golden_check.toggled.connect(
+            self.model.set_auto_golden
+        )
         self.view.upd_store.connect(self.model.update_store)
         for building in self.view.building_widgets.values():
             self.model.store_sig.connect(building.upd_lbl)

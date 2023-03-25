@@ -56,3 +56,11 @@ click_ticker = """
         Game.tickerL.click()
     }
 """
+
+pop_wrinkler = """
+    for (i in Game.wrinklers) {
+        if (Game.wrinklers[i].close === 1) {
+            Game.wrinklers[i].hp = 0
+        }
+    }
+"""

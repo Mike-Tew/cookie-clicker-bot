@@ -9,6 +9,8 @@ class Model(qtc.QObject):
     auto_build = False
     auto_golden = False
     auto_ticker = False
+    auto_pop_wrinkler = False
+
     store_sig = qtc.pyqtSignal(object)
     store = {
         "Cursor": {"img": 1, "quantity": 0, "to_buy": 0},
@@ -46,13 +48,15 @@ class Model(qtc.QObject):
     def game_loop(self):
         self.refresh()
         if self.auto_upg:
-            self.buy_upgrade()
+            self.webview.page().runJavaScript(js.buy_upgrade)
         if self.auto_build:
             self.buy_buildings()
         if self.auto_golden:
             self.webview.page().runJavaScript(js.click_golden)
         if self.auto_ticker:
             self.webview.page().runJavaScript(js.click_ticker)
+        if self.auto_pop_wrinkler:
+            self.webview.page().runJavaScript(js.pop_wrinkler)
 
     def update_gui(self):
         self.store_sig.emit(self.store)
@@ -80,6 +84,9 @@ class Model(qtc.QObject):
     def set_auto_ticker(self, value):
         self.auto_ticker = value
 
+    def set_auto_pop_wrinkler(self, value):
+        self.auto_pop_wrinkler = value
+
     def update_store(self, name, increase):
         if increase:
             self.store[name]["to_buy"] += 1
@@ -101,8 +108,6 @@ class Model(qtc.QObject):
 
         self.update_gui()
 
-    def buy_upgrade(self):
-        self.webview.page().runJavaScript(js.buy_upgrade)
 
     def buy_buildings(self):
         self.purchase_list = [

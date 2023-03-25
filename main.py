@@ -16,7 +16,7 @@ class MainWindow(qtw.QMainWindow):
         super().__init__()
 
         self.setWindowTitle("Cookie Clicker Bot")
-        self.setFixedSize(1900, 1080)
+        # self.setFixedSize(1900, 1080)
         self._create_menu_bar()
 
         self.webview = qtwe.QWebEngineView()
@@ -31,7 +31,13 @@ class MainWindow(qtw.QMainWindow):
         self.view.upgrades_widget.golden_check.toggled.connect(
             self.model.set_auto_golden
         )
-        self.view.upgrades_widget.ticker_check.toggled.connect(self.model.set_auto_ticker)
+        self.view.upgrades_widget.ticker_check.toggled.connect(
+            self.model.set_auto_ticker
+        )
+        self.view.upgrades_widget.wrinklers_check.toggled.connect(
+            self.model.set_auto_pop_wrinkler
+        )
+
         self.view.upd_store.connect(self.model.update_store)
         for building in self.view.building_widgets.values():
             self.model.store_sig.connect(building.upd_lbl)

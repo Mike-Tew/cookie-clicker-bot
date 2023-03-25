@@ -20,3 +20,6 @@ class Upgrades(qtw.QWidget):
 
         self.ticker_check = qtw.QCheckBox("Ticker")
         self.layout().addWidget(self.ticker_check)
+
+        self.wrinklers_check = qtw.QCheckBox("Pop Wrinklers")
+        self.layout().addWidget(self.wrinklers_check)

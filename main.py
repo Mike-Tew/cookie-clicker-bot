@@ -31,6 +31,7 @@ class MainWindow(qtw.QMainWindow):
         self.view.upgrades_widget.golden_check.toggled.connect(
             self.model.set_auto_golden
         )
+        self.view.upgrades_widget.ticker_check.toggled.connect(self.model.set_auto_ticker)
         self.view.upd_store.connect(self.model.update_store)
         for building in self.view.building_widgets.values():
             self.model.store_sig.connect(building.upd_lbl)

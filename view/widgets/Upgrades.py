@@ -17,3 +17,6 @@ class Upgrades(qtw.QWidget):
 
         self.golden_check = qtw.QCheckBox("Golden Cookies")
         self.layout().addWidget(self.golden_check)
+
+        self.ticker_check = qtw.QCheckBox("Ticker")
+        self.layout().addWidget(self.ticker_check)

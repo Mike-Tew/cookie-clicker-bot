@@ -50,3 +50,9 @@ click_golden = """
         Game.shimmers[shimmer].pop()
     };
 """
+
+click_ticker = """
+    if (Game.TickerEffect.type === 'fortune') {
+        Game.tickerL.click()
+    }
+"""

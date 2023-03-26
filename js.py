@@ -39,9 +39,11 @@ buy_building = """
 """
 
 buy_upgrade = """
-    upgrade = Game.UpgradesInStore[0];
-    if (typeof upgrade !== 'undefined') {
-        upgrade.buy();
+    for (var i in Game.UpgradesInStore) {
+        upg = Game.UpgradesInStore[i];
+        if (!upg.isVaulted() && upg.pool != 'toggle' && upg.pool != 'tech') {
+            upg.buy(1);
+        }
     }
 """
 

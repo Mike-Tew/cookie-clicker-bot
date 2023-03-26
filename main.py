@@ -25,7 +25,6 @@ class MainWindow(qtw.QMainWindow):
         self.setCentralWidget(self.view)
 
         self.view.clicker_btn.clicker_btn.toggled.connect(self.model.toggle_clicker)
-        self.view.speed_dial.dial.valueChanged.connect(self.model.change_click_speed)
         self.view.upgrades_widget.upg_check.toggled.connect(self.model.set_auto_upg)
         self.view.upgrades_widget.build_check.toggled.connect(self.model.set_auto_build)
         self.view.upgrades_widget.golden_check.toggled.connect(

@@ -4,7 +4,6 @@ import js
 
 
 class Model(qtc.QObject):
-    click_speed = 5
     auto_upg = False
     auto_build = False
     auto_golden = False
@@ -63,14 +62,9 @@ class Model(qtc.QObject):
 
     def toggle_clicker(self, value):
         if value:
-            self.webview.page().runJavaScript(
-                js.clicker.replace("<CLICKS>", str(self.click_speed))
-            )
+            self.webview.page().runJavaScript(js.clicker)
         else:
             self.webview.page().runJavaScript(js.stop_clicker)
-
-    def change_click_speed(self, speed):
-        self.click_speed = speed
 
     def set_auto_upg(self, value):
         self.auto_upg = value
@@ -107,7 +101,6 @@ class Model(qtc.QObject):
                 self.store[item]["to_buy"] = quantity
 
         self.update_gui()
-
 
     def buy_buildings(self):
         self.purchase_list = [

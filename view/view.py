@@ -4,7 +4,6 @@ from PyQt5 import QtWidgets as qtw
 
 from view.widgets.BuildingWidget import Building
 from view.widgets.Clicker import Clicker
-from view.widgets.Dial import Dial
 from view.widgets.Upgrades import Upgrades
 
 
@@ -30,9 +29,6 @@ class View(qtw.QWidget):
 
         self.clicker_btn = Clicker(self.webview)
         store_layout.layout().addWidget(self.clicker_btn)
-
-        self.speed_dial = Dial()
-        store_layout.layout().addWidget(self.speed_dial)
 
         self.upgrades_widget = Upgrades()
         store_layout.layout().addWidget(self.upgrades_widget)

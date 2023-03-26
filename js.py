@@ -14,7 +14,7 @@ clicker = """
             };
             return setInterval(intoTheAbyss, repeatInterval);
         };
-        clicker = autoClicker(<CLICKS>, 100);
+        clicker = autoClicker(10, 100);
     }
 """
 

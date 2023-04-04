@@ -36,6 +36,9 @@ class MainWindow(qtw.QMainWindow):
         self.view.upgrades_widget.wrinklers_check.toggled.connect(
             self.model.set_auto_pop_wrinkler
         )
+        self.view.upgrades_widget.spell_combo_check.toggled.connect(
+            self.model.set_auto_spell_combo
+        )
 
         self.view.upd_store.connect(self.model.update_store)
         for building in self.view.building_widgets.values():

@@ -9,28 +9,33 @@ class Model(qtc.QObject):
     auto_golden = False
     auto_ticker = False
     auto_pop_wrinkler = False
+    auto_spell_combo = False
 
     store_sig = qtc.pyqtSignal(object)
     store = {
-        "Cursor": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Grandma": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Farm": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Mine": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Factory": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Bank": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Temple": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Wizard tower": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Shipment": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Alchemy lab": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Portal": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Time machine": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Antimatter condenser": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Prism": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Chancemaker": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Fractal engine": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Javascript console": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Idleverse": {"img": 1, "quantity": 0, "to_buy": 0},
-        "Cortex baker": {"img": 1, "quantity": 0, "to_buy": 0},
+        "Cursor": {"img": "cursor", "quantity": 0, "to_buy": 0},
+        "Grandma": {"img": "grandma", "quantity": 0, "to_buy": 0},
+        "Farm": {"img": "farm", "quantity": 0, "to_buy": 0},
+        "Mine": {"img": "mine", "quantity": 0, "to_buy": 0},
+        "Factory": {"img": "factory", "quantity": 0, "to_buy": 0},
+        "Bank": {"img": "bank", "quantity": 0, "to_buy": 0},
+        "Temple": {"img": "temple", "quantity": 0, "to_buy": 0},
+        "Wizard tower": {"img": "wizard-tower", "quantity": 0, "to_buy": 0},
+        "Shipment": {"img": "shipment", "quantity": 0, "to_buy": 0},
+        "Alchemy lab": {"img": "alchemy-lab", "quantity": 0, "to_buy": 0},
+        "Portal": {"img": "portal", "quantity": 0, "to_buy": 0},
+        "Time machine": {"img": "time-machine", "quantity": 0, "to_buy": 0},
+        "Antimatter condenser": {
+            "img": "antimatter-condenser",
+            "quantity": 0,
+            "to_buy": 0,
+        },
+        "Prism": {"img": "prism", "quantity": 0, "to_buy": 0},
+        "Chancemaker": {"img": "chancemaker", "quantity": 0, "to_buy": 0},
+        "Fractal engine": {"img": "fractal-engine", "quantity": 0, "to_buy": 0},
+        "Javascript console": {"img": "javascript-console", "quantity": 0, "to_buy": 0},
+        "Idleverse": {"img": "idleverse", "quantity": 0, "to_buy": 0},
+        "Cortex baker": {"img": "cortex-baker", "quantity": 0, "to_buy": 0},
     }
     purchase_list = []
 
@@ -56,6 +61,9 @@ class Model(qtc.QObject):
             self.webview.page().runJavaScript(js.click_ticker)
         if self.auto_pop_wrinkler:
             self.webview.page().runJavaScript(js.pop_wrinkler)
+        if self.auto_spell_combo:
+            self.webview.page().runJavaScript(js.spell_combo)
+            self.webview.page().runJavaScript(js.buy_and_sell)
 
     def update_gui(self):
         self.store_sig.emit(self.store)
@@ -80,6 +88,9 @@ class Model(qtc.QObject):
 
     def set_auto_pop_wrinkler(self, value):
         self.auto_pop_wrinkler = value
+
+    def set_auto_spell_combo(self, value):
+        self.auto_spell_combo = value
 
     def update_store(self, name, increase):
         if increase:

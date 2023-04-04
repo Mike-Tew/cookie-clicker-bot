@@ -23,3 +23,6 @@ class Upgrades(qtw.QWidget):
 
         self.wrinklers_check = qtw.QCheckBox("Pop Wrinklers")
         self.layout().addWidget(self.wrinklers_check)
+
+        self.spell_combo_check = qtw.QCheckBox("Godzamok Combo")
+        self.layout().addWidget(self.spell_combo_check)

@@ -1,3 +1,5 @@
+from PyQt5 import QtCore as qtc
+from PyQt5 import QtGui as qtg
 from PyQt5 import QtWidgets as qtw
 
 
@@ -10,6 +12,7 @@ class Building(qtw.QWidget):
         self.upd_store = upd_store
 
         img_lbl = qtw.QLabel("IMG")
+        img_lbl.setPixmap(qtg.QPixmap("./assests/grandma.png").scaled(40, 40))
         layout.addWidget(img_lbl)
         name_lbl = qtw.QLabel(name)
         layout.addWidget(name_lbl)

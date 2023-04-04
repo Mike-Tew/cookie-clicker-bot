@@ -4,17 +4,18 @@ from PyQt5 import QtWidgets as qtw
 
 
 class Building(qtw.QWidget):
-    def __init__(self, name, upd_store):
+    def __init__(self, name, lbl_name, upd_store):
         super().__init__()
         layout = qtw.QHBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
         self.name = name
+        print(lbl_name)
         self.upd_store = upd_store
 
         img_lbl = qtw.QLabel("IMG")
-        img_lbl.setPixmap(qtg.QPixmap("./assests/grandma.png").scaled(40, 40))
+        img_lbl.setPixmap(qtg.QPixmap(f"./assests/{lbl_name}.png").scaled(40, 40))
         layout.addWidget(img_lbl)
-        name_lbl = qtw.QLabel(name)
+        name_lbl = qtw.QLabel(lbl_name)
         layout.addWidget(name_lbl)
         self.amount_lbl = qtw.QLabel("0/0")
         layout.addWidget(self.amount_lbl)
@@ -28,10 +29,6 @@ class Building(qtw.QWidget):
         layout.addWidget(up_btn)
 
         self.setLayout(layout)
-
-    def test_slot(self):
-        print("Test Slot")
-
 
     def upd_lbl(self, store):
         quantity = store[self.name]["quantity"]

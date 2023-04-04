@@ -34,12 +34,14 @@ class View(qtw.QWidget):
         store_layout.layout().addWidget(self.upgrades_widget)
 
         self.building_widgets = {
-            building: Building(building, self.upd_store)
-            for building in self.store
+            name: Building(name, lbl["name"], self.upd_store)
+            for name, lbl in self.store.items()
         }
         for building in self.building_widgets.values():
             building_layout.layout().addWidget(building)
-            # self.upd_store.connect(building.test_slot)
+
+        # for building in self.store:
+        #     print(self.store[building])
 
     def update_store(self):
         pass
